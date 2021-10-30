@@ -56,6 +56,7 @@ class _CardChampionState extends State<CardChampion>{
                 bottomLeft: Radius.circular(20),
                 topRight: Radius.circular(20)
               ),
+              border: Border.all(color: const Color(0xFF0CDEFF), width: 2),
               color: Colors.grey[200],
             ),
             child: ClipRRect(
@@ -96,7 +97,7 @@ class _CardChampionState extends State<CardChampion>{
                             color: Colors.white,
                             border: Border.all(
                               width: 2,
-                              color: Colors.white
+                              color: const Color(0xFF111111)
                             )
                           ),
                           child: ClipRRect(
@@ -109,12 +110,16 @@ class _CardChampionState extends State<CardChampion>{
                         ),
                         Container(
                           padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only( 
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only( 
                               bottomLeft: Radius.circular(20),
                               topRight: Radius.circular(20)
                             ),
-                            color: Colors.white
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 2,
+                              color: const Color(0xFF111111)
+                            )
                           ),
                           child: Column(
                             children: [
@@ -160,44 +165,14 @@ class _CardChampionState extends State<CardChampion>{
               ),
             )
           ),
-          Positioned(
-            left: 10,
-            top: 13,
-            child: Container(
-              height: MediaQuery.of(context).size.width-50,
-              width: MediaQuery.of(context).size.width-60,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only( 
-                  bottomLeft: Radius.circular(20),
-                  topRight: Radius.circular(20)
-                ),
-                border: Border.all(color: const Color(0xFF111111), width: 1.5)
-              ),
-            ),
-          ),
-          Positioned(
-            left: 12,
-            top: 10,
-            child: Container(
-              height: MediaQuery.of(context).size.width-40,
-              width: MediaQuery.of(context).size.width-60,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only( 
-                  bottomLeft: Radius.circular(20),
-                  topRight: Radius.circular(20)
-                ),
-                border: Border.all(color: const Color(0xFF0CDEFF), width: 1.5)
-              ),
-            ),
-          ),
           SizedBox(
             height: MediaQuery.of(context).size.width-40,
             width: MediaQuery.of(context).size.width-40,
             child: Stack(
               children: [
                 Positioned(
-                  top: 10,
-                  right: 10,
+                  top: 0,
+                  right: 0,
                   child: GestureDetector(
                     onTap: () {
                       widget.onSubmit(widget.id, !isFavorite);
