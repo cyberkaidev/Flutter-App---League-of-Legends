@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:lol/components/app_bar_back.dart';
 import 'package:lol/components/card_infor_champion.dart';
 import 'package:lol/servers/champion.dart';
 import 'package:basic_utils/basic_utils.dart';
@@ -12,9 +13,11 @@ class DetailsPage extends StatefulWidget {
   final String id;
   final String name;
 
-  const DetailsPage(
-    {Key? key, required this.id, required this.name}
-  ) : super(key: key);
+  const DetailsPage({
+    Key? key,
+    required this.id,
+    required this.name
+  }) : super(key: key);
 }
 
 class _DetailsPageState extends State<DetailsPage> {
@@ -23,44 +26,23 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () { Navigator.pop(context); },
-          child: Container(
-            margin: const EdgeInsets.only(left: 15),
-            child: Row(
-              children: [
-                const Icon(Icons.arrow_back_ios_new_rounded, color: Color(0xFF0CDEFF)),
-                Text(
-                  widget.name,
-                  style: const TextStyle(
-                    color: Color(0xFF0CDEFF),
-                    fontWeight: FontWeight.bold
-                  )
-                )
-              ],
-            ),
-          ), 
-        ),
-        leadingWidth: double.infinity,
-        elevation: 0,
-        backgroundColor: const Color(0xFF111111),
-        brightness: Brightness.dark
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(AppBar().preferredSize.height + 15),
+        child: AppBarBack(name: widget.name),
       ),
       body: Builder(
         builder: (BuildContext context) {
-          return Container(
-            child: FutureBuilder<dynamic>(
-              future: getChampion(widget.id),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
-                return snapshot.hasData
-                ? ChampionInformation(champ: snapshot.data)
-                : const Center(
-                  child: CircularProgressIndicator(color: Colors.black)
-                );
-              },
-            ),
+          return FutureBuilder<dynamic>(
+            future: getChampion(widget.id),
+            builder: (context, snapshot) {
+              // ignore: avoid_print
+              if (snapshot.hasError) print(snapshot.error);
+              return snapshot.hasData
+              ? ChampionInformation(champ: snapshot.data)
+              : const Center(
+                child: CircularProgressIndicator(color: Colors.black)
+              );
+            },
           );
         },
       )
