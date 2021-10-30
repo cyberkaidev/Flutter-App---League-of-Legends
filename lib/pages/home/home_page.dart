@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol/components/app_bar_home.dart';
 import 'package:lol/components/card_champion.dart';
 import 'package:lol/servers/champions.dart';
 
@@ -13,28 +14,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 20,
-        title: const Text('League of Legends'),
-        leadingWidth: double.infinity,
-        elevation: 0,
-        backgroundColor: const Color(0xFF111111),
-        brightness: Brightness.dark,
-        actions: [
-          GestureDetector(
-            child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.only(right: 20),
-              child: const Text(
-                'Favoritos',
-                style: TextStyle(
-                  color: Color(0xFF0CDEFF),
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),
-          )
-        ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(AppBar().preferredSize.height + 15),
+        child: const AppBarHome(),
       ),
       body: Builder(
         builder: (BuildContext context) {
@@ -42,6 +24,7 @@ class _HomePageState extends State<HomePage> {
             child: FutureBuilder<dynamic>(
               future: getChampions(),
               builder: (context, snapshot) {
+                // ignore: avoid_print
                 if (snapshot.hasError) print(snapshot.error);
                 return snapshot.hasData ?
                 ChampionsList(champ: snapshot.data)
