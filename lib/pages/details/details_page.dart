@@ -1,10 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
-import 'package:lol/components/app_bar_back.dart';
-import 'package:lol/components/card_infor_champion.dart';
+import 'package:lol/components/app_bars/app_bar_details.dart';
+import 'package:lol/components/cards/card_infor_champion.dart';
+import 'package:lol/components/messages/message_error.dart';
 import 'package:lol/servers/champion.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:lol/repositories/favorites_repository.dart';
+import 'package:provider/provider.dart';
 
 class DetailsPage extends StatefulWidget {
   @override
@@ -24,11 +27,22 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var favorites = context.watch<FavoritesRepository>();
+
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(AppBar().preferredSize.height + 15),
-        child: AppBarBack(name: widget.name),
+        child: AppBarDetails(
+          name: widget.name,
+          isFavorite: favorites.isIndex({'id': widget.id}),
+          onSubmit: (Map<String, dynamic> value, bool action) {
+            if(action){
+              favorites.saveAll(value);
+            }else{
+              favorites.remove(value);
+            }
+          }
+        ),
       ),
       body: Builder(
         builder: (BuildContext context) {
@@ -36,11 +50,11 @@ class _DetailsPageState extends State<DetailsPage> {
             future: getChampion(widget.id),
             builder: (context, snapshot) {
               // ignore: avoid_print
-              if (snapshot.hasError) print(snapshot.error);
+              if (snapshot.hasError) return const MessageError();
               return snapshot.hasData
               ? ChampionInformation(champ: snapshot.data)
               : const Center(
-                child: CircularProgressIndicator(color: Colors.black)
+                child: CircularProgressIndicator(color: Colors.white)
               );
             },
           );
@@ -83,8 +97,7 @@ class _ChampionInformationState extends State<ChampionInformation> {
             name,
             style: const TextStyle(
               fontSize: 25,
-              color: Color(0xFF111111),
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.bold
             ),
             textAlign: TextAlign.center,
           ),
@@ -93,8 +106,7 @@ class _ChampionInformationState extends State<ChampionInformation> {
             child: Text(
               StringUtils.capitalize(widget.champ["title"]),
               style: const TextStyle(
-                fontSize: 20,
-                color: Color(0xFF111111),
+                fontSize: 20
               ),
             ),
           ),
@@ -142,8 +154,7 @@ class _ChampionInformationState extends State<ChampionInformation> {
                           widget.champ["tags"][index] :
                           widget.champ["tags"][index]+" - ",
                           style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF111111)
+                            fontSize: 15
                           ),
                         )
                       )
@@ -160,29 +171,25 @@ class _ChampionInformationState extends State<ChampionInformation> {
                         Text("Ataque: "+
                           widget.champ["info"]["attack"].toString(),
                           style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF111111)
+                            fontSize: 15
                           ),
                         ),
                         Text("Defesa: "+
                           widget.champ["info"]["defense"].toString(),
                           style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF111111)
+                            fontSize: 15
                           ),
                         ),
                         Text("Magia: "+
                           widget.champ["info"]["magic"].toString(),
                           style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF111111)
+                            fontSize: 15
                           ),
                         ),
                         Text("Dificuldade: "+
                           widget.champ["info"]["difficulty"].toString(),
                           style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF111111)
+                            fontSize: 15
                           ),
                         )
                       ]
@@ -194,8 +201,7 @@ class _ChampionInformationState extends State<ChampionInformation> {
                   component: Text(
                     widget.champ["lore"],
                     style: const TextStyle(
-                      fontSize: 15,
-                      color: Color(0xFF111111)
+                      fontSize: 15
                     ),
                   ),
                 ),
@@ -212,8 +218,7 @@ class _ChampionInformationState extends State<ChampionInformation> {
                           child: Text(
                             widget.champ["allytips"][index],
                             style: const TextStyle(
-                              fontSize: 15,
-                              color: Color(0xFF111111)
+                              fontSize: 15
                             ),
                           ),
                         )
@@ -234,8 +239,7 @@ class _ChampionInformationState extends State<ChampionInformation> {
                           child: Text(
                             widget.champ["enemytips"][index],
                             style: const TextStyle(
-                              fontSize: 15,
-                              color: Color(0xFF111111)
+                              fontSize: 15
                             ),
                           ),
                         )

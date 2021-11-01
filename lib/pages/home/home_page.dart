@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lol/components/app_bar_home.dart';
-import 'package:lol/components/card_champion.dart';
+import 'package:lol/components/app_bars/app_bar_home.dart';
+import 'package:lol/components/cards/card_champion.dart';
+import 'package:lol/components/messages/message_error.dart';
+import 'package:lol/repositories/favorites_repository.dart';
 import 'package:lol/servers/champions.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,11 +28,11 @@ class _HomePageState extends State<HomePage> {
               future: getChampions(),
               builder: (context, snapshot) {
                 // ignore: avoid_print
-                if (snapshot.hasError) print(snapshot.error);
+                if (snapshot.hasError) return const MessageError();
                 return snapshot.hasData ?
                 ChampionsList(champ: snapshot.data)
                 : const Center(
-                  child: CircularProgressIndicator(color: Colors.black)
+                  child: CircularProgressIndicator(color: Colors.white)
                 );
               },
             ),
@@ -40,13 +43,17 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+// ignore: must_be_immutable
 class ChampionsList extends StatelessWidget {
   final List<Map<String, dynamic>> champ;
+  late FavoritesRepository favorites;
 
-  const ChampionsList({Key? key, required this.champ}) : super(key: key);
+  ChampionsList({Key? key, required this.champ}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    favorites = context.watch<FavoritesRepository>();
+
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: champ.length,
@@ -59,7 +66,14 @@ class ChampionsList extends StatelessWidget {
           image: champ[index]["image"],
           iconChampion: champ[index]["icon"],
           tags: champ[index]["tags"],
-          onSubmit: (String value, bool action) {}
+          isFavorite: favorites.isIndex(champ[index]),
+          onSubmit: (Map<String, dynamic> value, bool action) {
+            if(action){
+              favorites.saveAll(value);
+            }else{
+              favorites.remove(value);
+            }
+          }
         );
       },
     );
