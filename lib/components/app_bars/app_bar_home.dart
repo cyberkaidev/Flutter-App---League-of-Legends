@@ -12,7 +12,6 @@ class AppBarHome extends StatelessWidget {
       leadingWidth: double.infinity,
       elevation: 0,
       toolbarHeight: AppBar().preferredSize.height + 15,
-      backgroundColor: const Color(0xFF111111),
       actions: [
         GestureDetector(
           onTap: () {
