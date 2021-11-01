@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lol/pages/home/home_page.dart';
+import 'package:lol/repositories/favorites_repository.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.white,
-      statusBarColor: Color(0xFF111111),
-      statusBarBrightness: Brightness.dark,
+      systemNavigationBarColor: Color(0xFF2E3034),
+      statusBarColor: Color(0xFF2E3034),
+      statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarDividerColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark
+      systemNavigationBarDividerColor: Color(0xFF2E3034),
+      systemNavigationBarIconBrightness: Brightness.light
     )
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FavoritesRepository(),
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,9 +28,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage()
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFF2E3034),
+        textTheme: const TextTheme(
+          bodyText2: TextStyle(color: Colors.white)
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF2E3034)
+        )
+      ),
+      home: const HomePage()
     );
   }
 }
