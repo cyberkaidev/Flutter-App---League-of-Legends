@@ -19,7 +19,6 @@ Future<List<Map<String, dynamic>>> getChampions() async {
       "name": name,
       "title": title,
       "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+idName+"_0.jpg",
-      "icon": "http://ddragon.leagueoflegends.com/cdn/11.12.1/img/champion/"+idName+".png",
       "tags": tags
     });
   }
