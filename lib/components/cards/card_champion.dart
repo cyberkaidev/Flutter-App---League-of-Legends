@@ -8,7 +8,6 @@ class CardChampion extends StatefulWidget {
   final String name;
   final String image;
   final String title;
-  final String iconChampion;
   final List tags;
   final int isFavorite;
   final Function onSubmit;
@@ -20,7 +19,6 @@ class CardChampion extends StatefulWidget {
       required this.name,
       required this.image,
       required this.title,
-      required this.iconChampion,
       required this.tags,
       required this.isFavorite,
       required this.onSubmit
@@ -128,7 +126,6 @@ class _CardChampionState extends State<CardChampion>{
                             'name': widget.name,
                             'image': widget.image,
                             'title': widget.title,
-                            'icon': widget.iconChampion,
                             'tags': widget.tags,
                             'id': widget.id
                           },

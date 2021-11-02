@@ -64,7 +64,6 @@ class ChampionsList extends StatelessWidget {
           name: champ[index]["name"],
           title: champ[index]["title"],
           image: champ[index]["image"],
-          iconChampion: champ[index]["icon"],
           tags: champ[index]["tags"],
           isFavorite: favorites.isIndex(champ[index]),
           onSubmit: (Map<String, dynamic> value, bool action) {

@@ -38,7 +38,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 name: favorites.list[index]["name"],
                 title: favorites.list[index]["title"],
                 image: favorites.list[index]["image"],
-                iconChampion: favorites.list[index]["icon"],
                 tags: favorites.list[index]["tags"],
                 isFavorite: favorites.isIndex(favorites.list[index]),
                 onSubmit: (Map<String, dynamic> value, bool action) {
